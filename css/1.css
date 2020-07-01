@@ -1,0 +1,16 @@
+<style>
+	#app1 ul{
+		display: flex;
+		flex-wrap: wrap;
+	}
+	#app1 li{
+		padding: 3px;
+		list-style: none;
+		margin-right: 15px;
+		border: 1px solid #eee;
+	}
+	#app1 img{
+		width: 200px;
+		height: 150px;
+	}
+</style>
