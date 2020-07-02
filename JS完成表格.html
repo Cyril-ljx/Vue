@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+
+	</head>
+	<body>
+		<table id="table">
+		</table>
+		<script type="text/javascript">
+			// 1.定义数组
+			let books = []; //new Array();
+			books[1] = {
+				id: 1,
+				name: 'haha'
+			};
+			books.push({id:2,name:'hehe'});
+			console.log(books);
+		
+			// 2.获取id为table的标签
+			let table=document.getElementById("table");
+			// 添加表头
+			// 创建thead标签
+			let thead=document.createElement("thead");
+			// 创建th标签
+			let th=document.createElement("th");
+			thead.appendChild(th);
+			
+			let td=document.createElement("td");
+			td.innerText="ID";
+			th.appendChild(td);
+			
+			td=document.createElement("td");
+			td.innerText="名称";
+			th.appendChild(td);
+			
+			td=document.createElement("td");
+			td.innerText="出版日期";
+			th.appendChild(td);
+			
+			td=document.createElement("td");
+			td.innerText="价格";
+			th.appendChild(td);
+			
+			td=document.createElement("td");
+			td.innerText="购买数量";
+			th.appendChild(td);
+			
+			td=document.createElement("td");
+			td.innerText="操作";
+			th.appendChild(td);
+			
+			// 附加到table
+			table.appendChild(thead);
+			
+			let tbody=document.createElement("tbody");
+			table.appendChild(tbody);
+			let tr=document.createElement("tr");
+			tbody.appendChild(tr);
+			
+			for(let i=0;i<books.length;i++){
+				console.log(i);
+			}
+		</script>
+	</body>
+	
+</html>
