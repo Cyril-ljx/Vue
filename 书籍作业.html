@@ -4,107 +4,178 @@
 		<meta charset="utf-8" />
 		<title></title>
 		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
-
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
 	</head>
-	<body>
-		<div class="" id="app1">
-			<table border="" cellspacing="" cellpadding="">
 
-				<thead>
-					<tr>
-						<th></th>
-						<th>书籍名称</th>
-						<th>出版日期</th>
-						<th>价格</th>
-						<th>购买数量</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="(v,index) in list">
-						<!-- <td>{{index}}</td> -->
-						<td>{{v.id}}</td>
-						<td>{{v.书籍名称}}</td>
-						<td>{{v.出版日期}}</td>
-						<td>{{v.价格}}</td>
-						<td>
-							<button class="btn btn-default" @click="reduce(index)">-</button>
-							{{v.购买数量}}
-							<button class="btn btn-default" @click="add(index)">+</button>
-						</td>
-						<td><button class="btn btn-warning" @click="del(index)">移除</button></td>
+	<body>
+		<style>
+			.rowStyle{
+	    background-color: red!important;
+	  }
+	  .bgRed{
+	      background-color: #b2dba1;
+	  }
+	</style>
+		<div class="" id="app1">
+
+			<template>
+				<table class="table table-bordered table-hover">
+
+					<thead>
+						<tr>
+							<th>
+								<input type="checkbox" v-model="checkAll" @click="selectAll" @selection-change="handleSelectionChange"
+								 :row-class-name="rowStyle" />
+							</th>
+							<th></th>
+							<th>书籍名称</th>
+							<th>出版日期</th>
+							<th>价格</th>
+							<th>购买数量</th>
+							<th>操作</th>
 						</tr>
-				</tbody>
-			</table>
+						<td :colspan="colNum" height="150px" v-show="list.length<=0">
+							暂无商品
+						</td>
+					</thead>
+					<tbody>
+						<tr v-for="(v,index) in list">
+							<!-- <td>{{index}}</td> -->
+							<td>
+								<input type="checkbox" :value="v.id" v-model="checkItem" @change="selectOne" />
+							</td>
+							<td>{{v.id}}</td>
+							<td>{{v.书籍名称}}</td>
+							<td>{{v.出版日期}}</td>
+							<td>{{v.价格}}</td>
+							<td>
+								<button class="btn btn-default" @click="reduce(index)">-</button>
+								{{v.购买数量}}
+								<button class="btn btn-default" @click="add(index)">+</button>
+							</td>
+							<td><button class="btn btn-warning" @click="del(index)">移除</button></td>
+						</tr>
+					</tbody>
+				</table>
+
+			</template>
 			<h1 class="text-left">
 				金额总计:￥{{sum}}
 			</h1>
 		</div>
 		<script type="text/javascript">
 			var app = new Vue({
-						el: '#app1',
+				el: '#app1',
 
-						data: {
-							ahref: 'http://www.baidu.com',
-							isDisabled: true,
-							seen: false,
-							ok: false,
-							list: [{
-									id: '1',
-									出版日期: '2010-10',
-									价格: '60.00',
-									购买数量: '1',
-									书籍名称: 'java从入门到放弃'
-								}, {
-									id: '1',
-									出版日期: '2012-10',
-									价格: '90.00',
-									购买数量: '1',
-									书籍名称: 'PHP从入门到放弃'
-								},
-								{
-									id: '1',
-									出版日期: '2013-10',
-									价格: '80.01',
-									购买数量: '1',
-									书籍名称: 'Python从入门到放弃'
-								},
-								{
-									id: '1',
-									出版日期: '2011-10',
-									价格: '70.02',
-									购买数量: '1',
-									书籍名称: '什么都从入门到放弃'
-								}
-							]
+				data: {
+					ahref: 'http://www.baidu.com',
+					isDisabled: true,
+					seen: false,
+					ok: false,
+					checkItem: [],
+					checkAll: false,
+
+					list: [{
+							id: '1',
+							出版日期: '2010-10',
+							价格: '60.00',
+							购买数量: '1',
+							书籍名称: 'java从入门到放弃'
+						}, {
+							id: '2',
+							出版日期: '2012-10',
+							价格: '90.00',
+							购买数量: '1',
+							书籍名称: 'PHP从入门到放弃'
 						},
-						methods: {
-							add: function(index) {
-								this.list[index].购买数量++
-
-							},
-							reduce: function(index) {
-								if (this.list[index].购买数量 <= 1) {
-									this.list[index].购买数量 = 1
-								} else {
-									this.list[index].购买数量--
-								}
-
-							},
-							del: function(index) {
-								this.list.splice(index, 1)
-							}
+						{
+							id: '3',
+							出版日期: '2013-10',
+							价格: '80.01',
+							购买数量: '1',
+							书籍名称: 'Python从入门到放弃'
 						},
-						computed: {
-							sum() {
-								var total = 0
-								for (var i = 0; i < this.list.length; i++) {
-									total += parseFloat(this.list[i].价格) * parseFloat(this.list[i].购买数量)
+						{
+							id: '4',
+							出版日期: '2011-10',
+							价格: '70.02',
+							购买数量: '1',
+							书籍名称: '什么都从入门到放弃'
+						}
+					],
+					colNum: 7
+				},
+				methods: {
+					add: function(index) {
+						this.list[index].购买数量++
+
+					},
+					reduce: function(index) {
+						if (this.list[index].购买数量 <= 1) {
+							this.list[index].购买数量 = 1
+						} else {
+							this.list[index].购买数量--
+						}
+
+					},
+					del: function(index) {
+						this.list.splice(index, 1)
+					},
+					selectAll: function() {
+						this.checkItem = []
+						if (!this.checkAll) {
+							for (var i = 0; i < this.list.length; i++) {
+								this.checkItem.push(this.list[i].id)
+							}
+						} else {
+							this.checkItem = []
+							this.checkAll = false
+						}
+					},
+					selectOne() {
+						console.log(this.checkItem)
+						if (this.checkItem.length == this.list.length) {
+							this.checkAll = true,
+							this.$children.toggleClass("bgRed");
+						} else {
+							this.checkAll = false
+						}
+					},
+					handleSelectionChange(val) {
+						var arr = [];
+						val.forEach((val, index) => {
+							this.list.forEach((v, i) => {
+								// id 是每一行的数据id
+								if (val.id == v.id) {
+									// console.log(i);
+									arr.push(i)
 								}
-								return total.toFixed(2);
+							})
+						})
+						this.multipleSelection = arr;
+					},
+					rowStyle({
+						row,
+						rowIndex
+					}) {
+						let arr = this.multipleSelection;
+						for (let i = 0; i < arr.length; i++) {
+							if (rowIndex === arr[i]) {
+								return 'rowStyle'
 							}
-							}
-						});
+						}
+					},
+				},
+				computed: {
+					sum() {
+						var total = 0
+						for (var i = 0; i < this.list.length; i++) {
+							total += parseFloat(this.list[i].价格) * parseFloat(this.list[i].购买数量)
+						}
+						return total.toFixed(2);
+					}
+				}
+			});
 		</script>
 
 	</body>
